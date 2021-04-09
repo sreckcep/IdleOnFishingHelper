@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <time.h>
+#include <string.h>
 #include "../include/SDL2/SDL.h"
 #include "../include/SDL2/SDL_syswm.h"
 
@@ -46,9 +47,16 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Erreur de creation du renderer : %s\n", SDL_GetError());
         goto Quit;
     }
-
+    char imagePath[260];
+    (GetModuleFileNameA(NULL, imagePath, 260));
+    char *current = imagePath+strlen(imagePath);
+    while (*current != '\\'){
+        *current = '\0';
+        current--;
+    }
+    strcat(imagePath, "img\\fishingHelper.bmp");
     //import the image on a temporary surface
-    SDL_Surface *surface= SDL_LoadBMP("img/fishingHelper.bmp");
+    SDL_Surface *surface= SDL_LoadBMP(imagePath);
     if(surface == NULL){
         fprintf(stderr, "Erreur SDL_CreateTextureFromSurface : %s", SDL_GetError());
         goto Quit;
